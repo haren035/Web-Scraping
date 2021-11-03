@@ -1,14 +1,16 @@
 from bs4 import BeautifulSoup
 
-with open('home.html', 'r') as html_file:
-    content = html_file.read()
+import requests
 
-    soup = BeautifulSoup(content, 'lxml')
-    course_cards = soup.find_all('div', class_='card')
-    for course in course_cards:
-        course_name = course.h5.text
-        course_price = course.a.text.split()[-1]
+url = 'https://www.timesjobs.com/candidate/job-search.html?searchType=personalizedSearch&from=submit&txtKeywords=Python&txtLocation='
+html_text = requests.get(url).text
+soup = BeautifulSoup(html_text, 'lxml')
+job = soup.find('li', class_='clearfix job-bx wht-shd-bx')
+company_name = job.find('h3', class_='joblist-comp-name').text.replace(' ', '')
+skills = job.find('span', class_='srp-skills').text.replace(' ','')
+print(f'company name {company_name}')
+print(f'skills {skills}')
 
-        print(course_name)
-        print(course_price)
+
+
 
