@@ -12,17 +12,17 @@ def find_job():
     html_text = requests.get(url).text
     soup = BeautifulSoup(html_text, 'lxml')
     jobs = soup.find_all('li', class_='clearfix job-bx wht-shd-bx')
-    for job in jobs:
+    for index, job in enumerate(jobs):
         time_posted = job.find('span', class_='sim-posted').span.text
         if 'few' in time_posted:
             company_name = job.find('h3', class_='joblist-comp-name').text.replace(' ', '')
             skills = job.find('span', class_='srp-skills').text.replace(' ', '')
             more_info = job.header.h2.a['href']
             if unfamiliar_skill not in skills:
-                print(f'company name: {company_name.strip()}')
-                print(f'skills: {skills.strip()}')
-                print(f'More info {more_info}')
-                print(' ')
+                with open(f'posts/{index}.txt', 'w') as f:
+                    f.print(f'company name: {company_name.strip()} \n')
+                    f.print(f'skills: {skills.strip()} \n')
+                    f.print(f'More info {more_info} \n')
 
 
 if __name__ == '__main__':
